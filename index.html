@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPro - Plateforme d'Apprentissage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🎓";
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .main-content {
+            background: white;
+            margin: 2rem auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            animation: slideInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: slideInUp 1s ease 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease 0.4s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .course-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .lesson-list {
+            list-style: none;
+        }
+
+        .lesson-item {
+            padding: 0.8rem;
+            border-left: 4px solid var(--primary);
+            margin: 0.5rem 0;
+            background: var(--light);
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .answers {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .answer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .answer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        .answer-btn.correct {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .answer-btn.incorrect {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .quiz-result {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-content {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .lesson-content h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .back-btn {
+            background: var(--gray);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">EduPro</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-section="home">Accueil</a></li>
+                <li><a href="#" class="nav-link" data-section="courses">Cours</a></li>
+                <li><a href="#" class="nav-link" data-section="quiz">Quiz</a></li>
+                <li><a href="#" class="nav-link" data-section="progress">Progression</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Section Accueil -->
+            <section id="home" class="content-section active">
+                <div class="hero">
+                    <h1>Apprenez avec EduPro</h1>
+                    <p>Découvrez nos cours interactifs et testez vos connaissances avec nos quiz personnalisés. Une expérience d'apprentissage moderne et engageante.</p>
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary" onclick="showSection('courses')">Explorer les Cours</button>
+                        <button class="btn btn-outline" onclick="showSection('quiz')">Commencer un Quiz</button>
+                    </div>
+                </div>
+                
+                <div style="padding: 2rem;">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Pourquoi choisir EduPro ?</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">50+</div>
+                            <div>Cours Disponibles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">1000+</div>
+                            <div>Questions Quiz</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">95%</div>
+                            <div>Taux de Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Cours -->
+            <section id="courses" class="content-section">
+                <div style="padding: 2rem;">
+                    <h2 style="color: var(--primary); margin-bottom: 2rem;">Nos Cours</h2>
+                    <div class="courses-grid">
+                        <div class="course-card" onclick="showCourse('javascript')">
+                            <div class="course-header">
+                                <h3>🚀 JavaScript Moderne</h3>
+                                <p>De débutant à expert</p>
+                            </div>
+                            <div class="course-content">
+                                <p style="margin-bottom: 1rem; color: var(--gray);">Apprenez JavaScript ES6+, les frameworks modernes et les bonnes pratiques.</p>
+                                <ul class="lesson-list">
+                                    <li class="lesson-item">Variables et Types</li>
+                                    <li class="lesson-item">Fonctions Avancées</li>
+                                    <li class="lesson-item">DOM et Événements</li>
+                                    <li class="lesson-item">Programmation Asynchrone</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="course-card" onclick="showCourse('python')">
+                            <div class="course-header">
+                                <h3>🐍 Python pour Tous</h3>
+                                <p>Programmation facile</p>
+                            </div>
+                            <div class="course-content">
+                                <p style="margin-bottom: 1rem; color: var(--gray);">Maîtrisez Python pour le développement web, data science et automatisation.</p>
+                                <ul class="lesson-list">
+                                    <li class="lesson-item">Syntaxe de Base</li>
+                                    <li class="lesson-item">Structures de Données</li>
+                                    <li class="lesson-item">Modules et Packages</li>
+                                    <li class="lesson-item">Projets Pratiques</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="course-card" onclick="showCourse('design')">
+                            <div class="course-header">
+                                <h3>🎨 Design UI/UX</h3>
+                                <p>Créativité et ergonomie</p>
+                            </div>
+                            <div class="course-content">
+                                <p style="margin-bottom: 1rem; color: var(--gray);">Apprenez à créer des interfaces utilisateur modernes et intuitives.</p>
+                                <ul class="lesson-list">
+                                    <li class="lesson-item">Principes de Design</li>
+                                    <li class="lesson-item">Couleurs et Typographie</li>
+                                    <li class="lesson-item">Prototypage</li>
+                                    <li class="lesson-item">Tests Utilisateur</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Cours Détaillé -->
+            <section id="course-detail" class="content-section">
+                <div style="padding: 2rem;">
+                    <button class="back-btn" onclick="showSection('courses')">← Retour aux cours</button>
+                    <div id="course-content">
+                        <!-- Le contenu sera inséré dynamiquement -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Quiz -->
+            <section id="quiz" class="content-section">
+                <div style="padding: 2rem;">
+                    <h2 style="color: var(--primary); margin-bottom: 2rem;">Quiz Interactif</h2>
+                    <div class="quiz-container" id="quiz-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="question" id="question">Chargement...</div>
+                        <div class="answers" id="answers">
+                            <!-- Les réponses seront générées dynamiquement -->
+                        </div>
+                        <div class="quiz-result" id="quiz-result"></div>
+                        <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display: none; margin-top: 1rem;">Question Suivante</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Progression -->
+            <section id="progress" class="content-section">
+                <div style="padding: 2rem;">
+                    <h2 style="color: var(--primary); margin-bottom: 2rem;">Votre Progression</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="courses-completed">3</div>
+                            <div>Cours Terminés</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="quiz-score">85%</div>
+                            <div>Score Moyen Quiz</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="study-hours">42h</div>
+                            <div>Heures d'Étude</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Cours en Cours</h3>
+                        <div class="lesson-content">
+                            <h4>JavaScript Moderne - Chapitre 3</h4>
+                            <div class="progress-bar" style="background: #e2e8f0;">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <p>Progression: 65% - Prochaine leçon: Programmation Asynchrone</p>
+                        </div>
+                        
+                        <div class="lesson-content">
+                            <h4>Python pour Tous - Chapitre 2</h4>
+                            <div class="progress-bar" style="background: #e2e8f0;">
+                                <div class="progress-fill" style="width: 40%"></div>
+                            </div>
+                            <p>Progression: 40% - Prochaine leçon: Structures de Données</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Navigation entre sections
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Afficher la section demandée
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Mettre à jour la navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.section === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Gestionnaire de navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = e.target.dataset.section;
+                showSection(section);
+            });
+        });
+
+        // Cours détaillés
+        const courses = {
+            javascript: {
+                title: "🚀 JavaScript Moderne",
+                subtitle: "Maîtrisez le langage du web",
+                lessons: [
+                    {
+                        title: "Variables et Types de Données",
+                        content: `<h4>Les Variables en JavaScript</h4>
+                        <p>JavaScript propose trois façons de déclarer des variables :</p>
+                        <p><strong>let</strong> : Pour les variables qui peuvent changer</p>
+                        <p><strong>const</strong> : Pour les constantes</p>
+                        <p><strong>var</strong> : Ancienne syntaxe (évitez-la)</p>
+                        
+                        <h4>Types de Données</h4>
+                        <p>JavaScript supporte plusieurs types de données : Number, String, Boolean, Object, Array, null, undefined.</p>
+                        
+                        <h4>Exemple Pratique</h4>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        let nom = "Jean";<br>
+                        const age = 30;<br>
+                        let isStudent = true;<br>
+                        console.log(\`\${nom} a \${age} ans\`);
+                        </div>`
+                    },
+                    {
+                        title: "Fonctions Avancées",
+                        content: `<h4>Fonctions Fléchées</h4>
+                        <p>Les fonctions fléchées offrent une syntaxe plus concise :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        const addition = (a, b) => a + b;<br>
+                        const saluer = nom => \`Bonjour \${nom}!\`;
+                        </div>
+                        
+                        <h4>Paramètres par Défaut</h4>
+                        <p>Vous pouvez définir des valeurs par défaut pour vos paramètres :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        function creerUtilisateur(nom, age = 18) {<br>
+                        &nbsp;&nbsp;return { nom, age };<br>
+                        }
+                        </div>`
+                    }
+                ]
+            },
+            python: {
+                title: "🐍 Python pour Tous",
+                subtitle: "Programmation simple et puissante",
+                lessons: [
+                    {
+                        title: "Syntaxe de Base",
+                        content: `<h4>Variables et Affichage</h4>
+                        <p>Python utilise une syntaxe simple et lisible :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        nom = "Alice"<br>
+                        age = 25<br>
+                        print(f"{nom} a {age} ans")
+                        </div>
+                        
+                        <h4>Indentation</h4>
+                        <p>Python utilise l'indentation pour structurer le code :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        if age >= 18:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Majeur")<br>
+                        else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Mineur")
+                        </div>`
+                    },
+                    {
+                        title: "Listes et Dictionnaires",
+                        content: `<h4>Les Listes</h4>
+                        <p>Les listes stockent plusieurs éléments :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        fruits = ["pomme", "banane", "orange"]<br>
+                        fruits.append("kiwi")<br>
+                        print(fruits[0])  # pomme
+                        </div>
+                        
+                        <h4>Les Dictionnaires</h4>
+                        <p>Les dictionnaires associent des clés à des valeurs :</p>
+                        <div style="background: #1f2937; color: #f8fafc; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                        personne = {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"nom": "Bob",<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"age": 30<br>
+                        }<br>
+                        print(personne["nom"])
+                        </div>`
+                    }
+                ]
+            },
+            design: {
+                title: "🎨 Design UI/UX",
+                subtitle: "Créez des interfaces exceptionnelles",
+                lessons: [
+                    {
+                        title: "Principes de Design",
+                        content: `<h4>Les 4 Principes Fondamentaux</h4>
+                        <p><strong>1. Contraste</strong> : Créez des différences visuelles pour hiérarchiser l'information</p>
+                        <p><strong>2. Répétition</strong> : Maintenez une cohérence dans vos éléments</p>
+                        <p><strong>3. Alignement</strong> : Organisez vos éléments de manière structurée</p>
+                        <p><strong>4. Proximité</strong> : Groupez les éléments liés ensemble</p>
+                        
+                        <h4>La Règle des Tiers</h4>
+                        <p>Divisez votre interface en 9 sections égales et placez les éléments importants sur les intersections.</p>`
+                    },
+                    {
+                        title: "Couleurs et Typographie",
+                        content: `<h4>Psychologie des Couleurs</h4>
+                        <p><strong>Bleu</strong> : Confiance, professionnalisme</p>
+                        <p><strong>Rouge</strong> : Urgence, passion</p>
+                        <p><strong>Vert</strong> : Nature, succès</p>
+                        <p><strong>Orange</strong> : Énergie, créativité</p>
+                        
+                        <h4>Hiérarchie Typographique</h4>
+                        <p>Utilisez différentes tailles, poids et couleurs pour créer une hiérarchie claire dans vos textes.</p>`
+                    }
+                ]
+            }
+        };
+
+        function showCourse(courseId) {
+            const course = courses[courseId];
+            const courseContent = document.getElementById('course-content');
+            
+            let lessonsHtml = '';
+            course.lessons.forEach((lesson, index) => {
+                lessonsHtml += `
+                    <div class="lesson-content">
+                        <h4>${lesson.title}</h4>
+                        ${lesson.content}
+                    </div>
+                `;
+            });
+            
+            courseContent.innerHTML = `
+                <h2 style="color: var(--primary); margin-bottom: 1rem;">${course.title}</h2>
+                <p style="color: var(--gray); font-size: 1.1rem; margin-bottom: 2rem;">${course.subtitle}</p>
+                ${lessonsHtml}
+            `;
+            
+            showSection('course-detail');
+        }
+
+        // Système de Quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const questions = [
+            {
+                question: "Quelle est la syntaxe correcte pour déclarer une variable en JavaScript ?",
+                answers: ["var nom = 'Jean';", "variable nom = 'Jean';", "string nom = 'Jean';", "nom := 'Jean';"],
+                correct: 0
+            },
+            {
+                question: "Que signifie HTML ?",
+                answers: ["Hypertext Markup Language", "High Tech Modern Language", "Home Tool Markup Language", "Hypertext Modern Language"],
+                correct: 0
+            },
+            {
+                question: "Quel est le sélecteur CSS pour une classe ?",
+                answers: ["#classe", ".classe", "*classe", "@classe"],
+                correct: 1
+            },
+            {
+                question: "Quelle méthode Python permet d'ajouter un élément à une liste ?",
+                answers: ["add()", "insert()", "append()", "push()"],
+                correct: 2
+            },
+            {
+                question: "Quel principe de design crée une hiérarchie visuelle ?",
+                answers: ["Proximité", "Répétition", "Contraste", "Alignement"],
+                correct: 2
+            }
+        ];
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = `Question ${currentQuestion + 1}/${questions.length}: ${q.question}`;
+            
+            const answersDiv = document.getElementById('answers');
+            answersDiv.innerHTML = '';
+            
+            q.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer;
+                button.onclick = () => selectAnswer(index);
+                answersDiv.appendChild(button);
+            });
+
+            // Mise à jour de la barre de progression
+            const progressPercent = (currentQuestion / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            
+            document.getElementById('quiz-result').textContent = '';
+            document.getElementById('next-btn').style.display = 'none';
+            answered = false;
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answered) return;
+            
+            answered = true;
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+            
+            buttons.forEach((button, index) => {
+                if (index === q.correct) {
+                    button.classList.add('correct');
+                } else if (index === selectedIndex && index !== q.correct) {
+                    button.classList.add('incorrect');
+                }
+                button.style.pointerEvents = 'none';
+            });
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                document.getElementById('quiz-result').textContent = '✅ Bonne réponse !';
+                document.getElementById('quiz-result').style.color = '#10b981';
+            } else {
+                document.getElementById('quiz-result').textContent = '❌ Mauvaise réponse. La bonne réponse était : ' + q.answers[q.correct];
+                document.getElementById('quiz-result').style.color = '#ef4444';
+            }
+            
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function endQuiz() {
+            const percentage = Math.round((score / questions.length) * 100);
+            const resultDiv = document.getElementById('quiz-result');
+            
+            let message = '';
+            let color = '';
+            
+            if (percentage >= 80) {
+                message = `🏆 Excellent ! Vous avez obtenu ${score}/${questions.length} (${percentage}%)`;
+                color = '#10b981';
+            } else if (percentage >= 60) {
+                message = `👍 Bien joué ! Vous avez obtenu ${score}/${questions.length} (${percentage}%)`;
+                color = '#f59e0b';
+            } else {
+                message = `📚 Continuez vos efforts ! Vous avez obtenu ${score}/${questions.length} (${percentage}%)`;
+                color = '#ef4444';
+            }
+            
+            document.getElementById('question').textContent = 'Quiz Terminé !';
+            document.getElementById('answers').innerHTML = '';
+            resultDiv.textContent = message;
+            resultDiv.style.color = color;
+            
+            // Bouton pour recommencer
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'btn btn-primary';
+            restartBtn.textContent = 'Recommencer le Quiz';
+            restartBtn.style.marginTop = '1rem';
+            restartBtn.onclick = restartQuiz;
+            document.getElementById('answers').appendChild(restartBtn);
+            
+            // Mettre à jour la progression globale
+            updateProgress();
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            loadQuestion();
+        }
+
+        function updateProgress() {
+            // Simuler une mise à jour des statistiques
+            const coursesCompleted = Math.min(parseInt(document.getElementById('courses-completed').textContent) + 1, 6);
+            const newScore = Math.round((score / questions.length) * 100);
+            const currentAvg = parseInt(document.getElementById('quiz-score').textContent);
+            const avgScore = Math.round((currentAvg + newScore) / 2);
+            const studyHours = parseInt(document.getElementById('study-hours').textContent) + 1;
+            
+            document.getElementById('courses-completed').textContent = coursesCompleted;
+            document.getElementById('quiz-score').textContent = avgScore + '%';
+            document.getElementById('study-hours').textContent = studyHours + 'h';
+        }
+
+        // Initialiser le quiz au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestion();
+            
+            // Animation d'apparition des éléments
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            // Observer tous les éléments avec animation
+            document.querySelectorAll('.course-card, .stat-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+            
+            // Effet de typing pour le titre principal
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            setTimeout(typeWriter, 500);
+        });
+
+        // Notifications toast
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : '#ef4444'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 10000;
+                opacity: 0;
+                transform: translateX(100px);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100px)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Sauvegarder la progression (simulation)
+        function saveProgress() {
+            const progress = {
+                currentSection: document.querySelector('.nav-link.active')?.dataset.section || 'home',
+                coursesCompleted: document.getElementById('courses-completed').textContent,
+                quizScore: document.getElementById('quiz-score').textContent,
+                studyHours: document.getElementById('study-hours').textContent,
+                lastVisit: new Date().toISOString()
+            };
+            
+            // En production, vous pourriez envoyer ces données à un serveur
+            console.log('Progression sauvegardée:', progress);
+            showNotification('Progression sauvegardée !');
+        }
+
+        // Sauvegarder automatiquement toutes les 30 secondes
+        setInterval(saveProgress, 30000);
+
+        // Raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === '1') {
+                e.preventDefault();
+                showSection('home');
+            } else if (e.ctrlKey && e.key === '2') {
+                e.preventDefault();
+                showSection('courses');
+            } else if (e.ctrlKey && e.key === '3') {
+                e.preventDefault();
+                showSection('quiz');
+            } else if (e.ctrlKey && e.key === '4') {
+                e.preventDefault();
+                showSection('progress');
+            }
+        });
+
+        // Mode sombre/clair (bonus)
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            showNotification(`Mode ${isDark ? 'sombre' : 'clair'} activé`);
+        }
+
+        // Ajouter les styles pour le mode sombre
+        const darkStyles = `
+            .dark-theme {
+                --dark: #f8fafc;
+                --light: #1f2937;
+                background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            }
+            .dark-theme .main-content {
+                background: #374151;
+                color: #f8fafc;
+            }
+            .dark-theme .course-card {
+                background: #4b5563;
+                color: #f8fafc;
+            }
+            .dark-theme .lesson-content {
+                background: #4b5563;
+                color: #f8fafc;
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = darkStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
